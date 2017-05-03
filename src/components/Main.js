@@ -102,7 +102,7 @@ class CotrollerUnit extends React.Component{
 	}
 	 render(){
 
-	 	var controllerUnitClassName = "controller-unit";
+	 	let controllerUnitClassName = "controller-unit";
 	 	if(this.props.arrange.isCenter){
 	 		controllerUnitClassName += ' is-center';
 	 		if(this.props.arrange.isInverse){
