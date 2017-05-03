@@ -5,7 +5,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 // 获取图片相关数据
-var imageDatas = require('json!../data/imageDatas.json');
+let imageDatas = require('json!../data/imageDatas.json');
 
 // 利用自执行函数， 将图片名信息转成图片URL路径信息（只使用一次函数）；
 let genImageURL = (Arr) => {
@@ -19,15 +19,16 @@ let genImageURL = (Arr) => {
 imageDatas = genImageURL(imageDatas);
 
 //获取区间内的一个随机值 
-function getRangeRandom(low, high){
+let getRangeRandom = (low, high) =>{
 	return Math.ceil(Math.random()*(high - low) + low);
 }
 
 //获取0-30度之间的一个正负值
-function get30DegRandom(){
+let get30DegRandom = () => {
 	return ((Math.random() > .5 ? '-' : '+') + Math.ceil(Math.random()*30));
 }
 
+//图片组件
 class ImgFigure extends React.Component{
 	constructor(props){
 		super(props);
@@ -46,7 +47,7 @@ class ImgFigure extends React.Component{
 	}
 	render(){
 
-		var styleObj = {};
+		let styleObj = {};
 
 		// 如果指定位置则使用
 		if(this.props.arrange.pos){
@@ -55,12 +56,16 @@ class ImgFigure extends React.Component{
 
 		//如何旋转角度有值并不为0，则添加旋转角度
 		if(this.props.arrange.rotate){
-			styleObj.transform = 'rotate(' + this.props.arrange.rotate +'deg)';
+			//浏览器前缀兼容
+			(['Moz', 'ms', 'Webkit', '']).forEach((value) => {
+				styleObj[value + 'Transform'] = 'rotate(' + this.props.arrange.rotate + 'deg)';
+			})
 		}
 
-		var imgFigureClassName = "img-figure";
+		let imgFigureClassName = "img-figure";
 		imgFigureClassName += this.props.arrange.isInverse ? ' is-inverse' : '';
-
+		
+		//中心图片设置层级，避免被遮挡
 		if(this.props.arrange.isCenter){
 			styleObj.zIndex = 10;
 		}
@@ -80,7 +85,7 @@ class ImgFigure extends React.Component{
 			)
 	}
 };
-// 控制组件
+// 圆点控制组件
 class CotrollerUnit extends React.Component{
 	constructor(props){
 		super(props);
@@ -167,7 +172,7 @@ class AppComponent extends React.Component{
 			vPosRangeX = vPosRange.x,
 
 			imgsArrangeTopArr = [],
-			topImgNum = Math.ceil(Math.random() * 2),
+			topImgNum = Math.floor(Math.random() * 2),
 			topImgSpliceIndex = 0,
 			imgsArrangeCenterArr = imgsArrangeArr.splice(centerIndex, 1);
 
